@@ -43,14 +43,6 @@ jobs:
             pwd
             ls
             hugo
-      - run:
-          name: create pages branch
-          command: |
-            git init public
-            cd public
-            git checkout -b pages
-            git remote add origin git@github.com:monmonzaw/circle.github.io.git
-            cd ..
       - persist_to_workspace:
           root: .
           paths: public
@@ -62,6 +54,14 @@ jobs:
           fingerprints:
             - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
       - checkout
+      - run:
+          name: create pages branch
+          command: |
+            git init public
+            cd public
+            git checkout -b pages
+            git remote add origin git@github.com:monmonzaw/circle.github.io.git
+            cd ..
       - run:
           name: Deploy
           command: |

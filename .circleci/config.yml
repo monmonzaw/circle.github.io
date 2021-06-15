@@ -68,5 +68,10 @@ jobs:
             git branch
             git checkout -b pages
             ls
-            cd ./public
-            ls
+            rm -rf public/*
+            hugo
+            cp -prv .circleci public
+            cd public
+            git add --all
+            git commit -m "Deploy pages"
+            git push origin pages

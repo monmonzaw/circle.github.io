@@ -24,6 +24,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            pwd
             git submodule sync
             git submodule update --init --recursive
             pip install jupyter
@@ -37,6 +38,7 @@ jobs:
     docker:
       - image: cibuilds/hugo:latest
     steps:
+      - checkout
       - run:
           name: build hugo
           command: |

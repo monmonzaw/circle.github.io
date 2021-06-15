@@ -64,6 +64,5 @@ jobs:
           cp -prv .circleci public
           cd public
           git add --all
-          git commit -m 'Update [ci skip]'
+          git commit -m "Deploy pages"
           git push -f origin pages
-~

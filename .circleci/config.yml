@@ -77,12 +77,10 @@ jobs:
             git config --global user.email "${GIT_USER_EMAIL}"
             pwd
             ls
-            git clone -b pages git@github.com:monmonzaw/circle.github.io.git public
-            rm -rf public/*
-            pwd
-            ls
+            git checkout -b pages
             cp -prv .circleci public
             cd public
-            git add --all
+            git init
+            git add .
             git commit -m "Deploy pages"
-            git push -f origin pages
+            git push origin pages

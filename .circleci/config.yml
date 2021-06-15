@@ -4,12 +4,9 @@ workflows:
   main:
     jobs:
       - convert
-      - build:
-          requires:
-            - convert
       - deploy:
           requires:
-            - build
+            - convert
           filters:
             branches:
               only:
@@ -33,18 +30,6 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: content
-  build:
-    docker:
-      - image: cibuilds/hugo:latest
-    steps:
-      - checkout
-      - run:
-          name: build hugo
-          command: |
-            hugo
-      - persist_to_workspace:
-          root: .
-          paths: public
   deploy:
     docker:
       - image: cibuilds/hugo:latest
@@ -53,21 +38,17 @@ jobs:
           fingerprints:
             - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
       - checkout
+      - run: rm -rf public
       - run:
-          name: create pages branch
-          command: |
-            git init public
-            cd public
-            git checkout -b pages
-            git remote add origin git@github.com:monmonzaw/circle.github.io.git
+          name: Git Clone
+          command: git clone --depth 1 https://github.com/monmonzaw/circle.github.io.git public
       - run:
-          name: Deploy
-          command: |
-            git config --global user.name "${GIT_USER_NAME}"
-            git config --global user.email "${GIT_USER_EMAIL}"
-            git branch
-            git checkout -b pages
-            cd public
-            git add --all
-            git commit -m "Adding 'public' directory from 'master' branch."
-            git push origin pages
+          name: Hugo Build
+          command: hugo --minify
+      - run: cd public && touch CNAME && echo "$DOMAIN" > CNAME
+      - run: cd public && pwd
+      - run: cd public && git config --global user.email "${GIT_USER_EMAIL}"
+      - run: cd public && git config --global user.name "${GIT_USER_NAME}"
+      - run: cd public && git add -A
+      - run: cd public && git commit -m "deploy from CI"
+      - run: cd public && git push origin pages

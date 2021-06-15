@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install packages
+          name: Install dependencies
           command: |
             git submodule sync
             git submodule update --init --recursive

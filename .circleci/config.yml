@@ -82,9 +82,11 @@ jobs:
             ls
             git checkout -b pages
             cp -prv .circleci public
+            pwd
             cd public
             ls
             git init
+            git pull origin pages
             git add .
             git commit -m "Deploy pages"
             git push origin pages

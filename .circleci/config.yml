@@ -67,7 +67,6 @@ jobs:
             git config --global user.email "${GIT_USER_EMAIL}"
             git branch
             git checkout -b pages
-            git checkout master -- public
             git add public/*
             git commit -m "Adding 'public' directory from 'master' branch."
             git push origin pages

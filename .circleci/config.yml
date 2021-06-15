@@ -67,9 +67,4 @@ jobs:
             git config --global user.email "${GIT_USER_EMAIL}"
             git branch
             git checkout -b pages
-            cp -prv .circleci public
             ls
-            git merge --allow-unrelated-histories origin/pages
-            git add public/*
-            git commit -m "Deploy pages"
-            git push origin pages

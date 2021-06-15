@@ -1,14 +1,5 @@
-#!/bin/bash -eux
-
-if [ -z "${GIT_USER_NAME}" ]; then
-  echo "Please set an env var GIT_USER_NAME"
-  exit 1
-fi
-
-if [ -z "${GIT_USER_EMAIL}" ]; then
-  echo "Please set an env var GIT_USER_EMAIL"
-  exit 1
-fi
+#!/bin/bash
+set -e
 
 GIT_REPO="git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
 

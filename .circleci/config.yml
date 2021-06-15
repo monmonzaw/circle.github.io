@@ -56,4 +56,4 @@ jobs:
       - checkout
       - run:
         name: Deploy
-        command: ./scripts/deploy_production.sh
+        command: sh ./scripts/deploy_production.sh

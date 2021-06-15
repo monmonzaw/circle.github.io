@@ -37,6 +37,13 @@ jobs:
       - image: cibuilds/hugo:latest
     steps:
       - run:
+          name: build hugo
+          command: |
+            ifconfig
+            pwd
+            ls
+            hugo
+      - run:
           name: create pages branch
           command: |
             git init public
@@ -44,13 +51,6 @@ jobs:
             git checkout -b pages
             git remote add origin git@github.com:monmonzaw/circle.github.io.git
             cd ..
-      - run:
-          name: build hugo
-          command: |
-            ifconfig
-            pwd
-            ls
-            hugo
       - persist_to_workspace:
           root: .
           paths: public
@@ -65,6 +65,10 @@ jobs:
       - run:
           name: Deploy
           command: |
+            ifconfig
+            pwd
+            ls
+            git branch
             git clone -b pages git@github.com:monmonzaw/circle.github.io.git public
             rm -rf public/*
             git config --global user.name "${GIT_USER_NAME}"

@@ -16,6 +16,7 @@ workflows:
                 - master
 jobs:
   convert:
+    working_directory: ~/hugo
     docker:
       - image: circleci/python:3.7.6
     steps:

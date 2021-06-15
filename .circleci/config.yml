@@ -73,6 +73,9 @@ jobs:
             ifconfig
             pwd
             ls
+            cd public
+            ls
+            cd ..
             git config --global user.name "${GIT_USER_NAME}"
             git config --global user.email "${GIT_USER_EMAIL}"
             pwd
@@ -80,6 +83,7 @@ jobs:
             git checkout -b pages
             cp -prv .circleci public
             cd public
+            ls
             git init
             git add .
             git commit -m "Deploy pages"

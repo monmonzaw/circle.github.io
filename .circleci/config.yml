@@ -7,6 +7,9 @@ workflows:
       - build:
           requires:
             - convert
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
@@ -33,10 +36,6 @@ jobs:
     docker:
       - image: cibuilds/hugo:latest
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
-      - checkout
       - run:
           name: build hugo
           command: |
@@ -44,9 +43,17 @@ jobs:
             pwd
             ls
             hugo
-      - run:
-        name: Deploy
-        command: ./scripts/deploy_production.sh
       - persist_to_workspace:
           root: .
           paths: public
+  deploy:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
+      - checkout
+      - run:
+        name: Deploy
+        command: ./scripts/deploy_production.sh

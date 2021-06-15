@@ -4,7 +4,7 @@ workflows:
   main:
     jobs:
       - convert
-      - build/deploy:
+      - build:
           requires:
             - convert
           filters:
@@ -30,7 +30,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: content
-  build/deploy:
+  build:
     docker:
       - image: cibuilds/hugo:latest
     steps:

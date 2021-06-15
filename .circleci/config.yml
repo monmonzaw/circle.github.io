@@ -68,5 +68,5 @@ jobs:
             git branch
             git checkout -b pages
             ls
-            cd public
+            cd ./public
             ls

@@ -1,0 +1,86 @@
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - convert
+      - build:
+          requires:
+            - convert
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+jobs:
+  convert:
+    working_directory: ~/hugo
+    docker:
+      - image: circleci/python:3.7.6
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pwd
+            git submodule sync
+            git submodule update --init --recursive
+            pip install jupyter
+            pip install nb2hugo
+            touch logs.txt
+            python convert-to-md.py -d
+      - persist_to_workspace:
+          root: .
+          paths: content
+  build:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      - checkout
+      - run:
+          name: build hugo
+          command: |
+            ifconfig
+            pwd
+            ls
+            hugo
+      - persist_to_workspace:
+          root: .
+          paths: public
+  deploy:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
+      - checkout
+      - run:
+          name: create pages branch
+          command: |
+            git init public
+            cd public
+            ls
+            git checkout -b pages
+            git remote add origin git@github.com:monmonzaw/circle.github.io.git
+            cd ..
+            ls
+      - run:
+          name: Deploy
+          command: |
+            ifconfig
+            pwd
+            ls
+            git config --global user.name "${GIT_USER_NAME}"
+            git config --global user.email "${GIT_USER_EMAIL}"
+            pwd
+            ls
+            git checkout -b pages
+            cp -prv .circleci public
+            cd public
+            git init
+            git add .
+            git commit -m "Deploy pages"
+            git push origin pages

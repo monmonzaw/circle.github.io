@@ -13,7 +13,6 @@ workflows:
                 - master
 jobs:
   convert:
-    working_directory: ~/hugo
     docker:
       - image: circleci/python:3.7.6
     steps:
@@ -45,6 +44,9 @@ jobs:
             pwd
             ls
             hugo
+      - run:
+        name: Deploy
+        command: ./scripts/deploy_production.sh
       - persist_to_workspace:
           root: .
           paths: public

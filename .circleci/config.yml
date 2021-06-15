@@ -41,7 +41,7 @@ jobs:
       - run: rm -rf public
       - run:
           name: Git Clone
-          command: git clone --depth 1 https://github.com/monmonzaw/circle.github.io.git public
+          command: git clone -b pages  https://github.com/monmonzaw/circle.github.io.git public
       - run:
           name: Hugo Build
           command: hugo --minify

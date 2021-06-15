@@ -56,4 +56,14 @@ jobs:
       - checkout
       - run:
         name: Deploy
-        command: sh ./scripts/deploy_production.sh
+        command: |
+          git config --global user.name "${GIT_USER_NAME}"
+          git config --global user.email "${GIT_USER_EMAIL}"
+          git submodule init
+          git submodule update
+          cp -prv .circleci public
+          cd public
+          git add --all
+          git commit -m 'Update [ci skip]'
+          git push -f origin pages
+~

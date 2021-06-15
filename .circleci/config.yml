@@ -72,7 +72,9 @@ jobs:
             hugo
             cp -prv .circleci public
             cd public
-            git pull origin/pages
+            ls
+            git init
+            git pull origin pages
             git add --all
             git commit -m "Deploy pages"
             git push origin pages

@@ -4,6 +4,13 @@ workflows:
   main:
     jobs:
       - convert
+      - build/deploy:
+          requires:
+            - convert
+          filters:
+            branches:
+              only:
+                - master
 jobs:
   convert:
     working_directory: ~/hugo
@@ -23,3 +30,22 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: content
+  build/deploy:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
+      - checkout
+      - run:
+          name: build hugo
+          command: |
+            ifconfig
+            hugo
+      - run:
+        name: Deploy
+        command: ./scripts/deploy_production.sh
+      - persist_to_workspace:
+          root: .
+          paths: public

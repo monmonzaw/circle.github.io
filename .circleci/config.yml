@@ -69,7 +69,7 @@ jobs:
             git checkout -b pages
             cp -prv .circleci public
             ls
-            git pull origin pages
+            git merge --allow-unrelated-histories origin/pages
             git add public/*
             git commit -m "Deploy pages"
             git push origin pages

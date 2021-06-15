@@ -42,10 +42,9 @@ jobs:
           name: build hugo
           command: |
             ifconfig
+            pwd
+            ls
             hugo
-      - run:
-        name: Deploy
-        command: ./scripts/deploy_production.sh
       - persist_to_workspace:
           root: .
           paths: public

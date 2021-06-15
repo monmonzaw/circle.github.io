@@ -63,15 +63,15 @@ jobs:
             - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
       - checkout
       - run:
-        name: Deploy
-        command: |
-          git clone -b pages git@github.com:monmonzaw/circle.github.io.git public
-          rm -rf public/*
-          git config --global user.name "${GIT_USER_NAME}"
-          git config --global user.email "${GIT_USER_EMAIL}"
-          ls
-          cp -prv .circleci public
-          cd public
-          git add --all
-          git commit -m "Deploy pages"
-          git push -f origin pages
+          name: Deploy
+          command: |
+            git clone -b pages git@github.com:monmonzaw/circle.github.io.git public
+            rm -rf public/*
+            git config --global user.name "${GIT_USER_NAME}"
+            git config --global user.email "${GIT_USER_EMAIL}"
+            ls
+            cp -prv .circleci public
+            cd public
+            git add --all
+            git commit -m "Deploy pages"
+            git push -f origin pages

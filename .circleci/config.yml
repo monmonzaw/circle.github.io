@@ -24,7 +24,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pwd
             git submodule sync
             git submodule update --init --recursive
             pip install jupyter
@@ -42,9 +41,6 @@ jobs:
       - run:
           name: build hugo
           command: |
-            ifconfig
-            pwd
-            ls
             hugo
       - persist_to_workspace:
           root: .
@@ -62,31 +58,18 @@ jobs:
           command: |
             git init public
             cd public
-            ls
             git checkout -b pages
             git remote add origin git@github.com:monmonzaw/circle.github.io.git
-            cd ..
-            ls
       - run:
           name: Deploy
           command: |
-            ifconfig
-            pwd
-            ls
-            cd public
-            ls
-            cd ..
             git config --global user.name "${GIT_USER_NAME}"
             git config --global user.email "${GIT_USER_EMAIL}"
-            pwd
-            ls
+            git branch
             git checkout -b pages
             cp -prv .circleci public
-            pwd
-            cd public
             ls
-            git init
             git pull origin pages
-            git add .
+            git add public/*
             git commit -m "Deploy pages"
             git push origin pages

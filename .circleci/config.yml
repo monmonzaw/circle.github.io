@@ -1,0 +1,50 @@
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - convert
+      - build/deploy:
+          requires:
+            - convert
+          filters:
+            branches:
+              only:
+                - master
+jobs:
+  convert:
+    working_directory: ~/hugo
+    docker:
+      - image: circleci/python:3.7.6
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: |
+            git submodule sync
+            git submodule update --init --recursive
+            pip install jupyter
+            pip install nb2hugo
+            touch logs.txt
+            python convert-to-md.py -d
+      - persist_to_workspace:
+          root: .
+          paths: content
+  build/deploy:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:N4bV+8n2dn6ThW0q+mgGUaqo2fmfhifNNH0y25SORtI annexdev02monzaw@gmail.com"
+      - checkout
+      - run:
+          name: build hugo
+          command: |
+            hugo
+      - run:
+        name: Deploy
+        command: ./scripts/deploy_production.sh
+      - persist_to_workspace:
+          root: .
+          paths: public
